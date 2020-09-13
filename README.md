@@ -1,2 +1,10 @@
 # Symbols
-Repository for Symbols app
+Repository for Symbols app - 
+
+## Disclaimer
+
+This tweak does not use any copyrighted Apple assets, all displayed images are part of iOS
+
+## Building
+
+```git clone https://github.com/MTACS/Symbols.git && make do```
