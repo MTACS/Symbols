@@ -1,9 +1,9 @@
 # Symbols
-Repository for Symbols app - 
+Repository for Symbols app
 
 ## Disclaimer
 
-This tweak does not use any copyrighted Apple assets, all displayed images are part of iOS
+This tweak does not use any copyrighted Apple assets, all images displayed are part of iOS
 
 ## Building
 
