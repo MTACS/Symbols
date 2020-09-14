@@ -83,7 +83,7 @@
 
 - (void)about:(id)sender {
 
-	UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Symbols" message:@"\nVersion 1.0 © MTAC" preferredStyle:UIAlertControllerStyleAlert];
+	UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Symbols" message:@"\nVersion 1.0.1 © MTAC" preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *ok = [UIAlertAction actionWithTitle:@"Dismiss" style:UIAlertActionStyleCancel handler:nil];
 	[alertController addAction:ok];
     [[[[UIApplication sharedApplication] keyWindow] rootViewController] presentViewController:alertController animated:YES completion:nil];
@@ -149,9 +149,23 @@
 	
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 	UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
-	pasteboard.string = [[self loadSymbols] objectAtIndex:indexPath.row];
-	UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Symbols" message:[NSString stringWithFormat:@"The symbol '%@' has been copied to the clipboard", [[self loadSymbols] objectAtIndex:indexPath.row]] preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction *ok = [UIAlertAction actionWithTitle:@"Dismiss" style:UIAlertActionStyleCancel handler:nil];
+	UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Symbols" message:@"Choose an export format" preferredStyle:UIAlertControllerStyleAlert];
+	UIAlertAction* text = [UIAlertAction actionWithTitle:@"Text" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+        pasteboard.string = [[self loadSymbols] objectAtIndex:indexPath.row];
+
+    }];
+	UIAlertAction* objc = [UIAlertAction actionWithTitle:@"Objective-C" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+        pasteboard.string = [NSString stringWithFormat:@"[UIImage systemImageNamed:@\"%@\"]", [[self loadSymbols] objectAtIndex:indexPath.row]];
+
+    }];
+	UIAlertAction* swift = [UIAlertAction actionWithTitle:@"Swift" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+        pasteboard.string = [NSString stringWithFormat:@"UIImage(systemName:\"%@\")", [[self loadSymbols] objectAtIndex:indexPath.row]];
+
+    }];
+    UIAlertAction *ok = [UIAlertAction actionWithTitle:@"Dismiss" style:UIAlertActionStyleDestructive handler:nil];
+	[alertController addAction:text];
+	[alertController addAction:objc];
+	[alertController addAction:swift];
 	[alertController addAction:ok];
     [[[[UIApplication sharedApplication] keyWindow] rootViewController] presentViewController:alertController animated:YES completion:nil];
 
