@@ -18,4 +18,4 @@ before-stage::
 	find . -name ".DS\_Store" -delete
 
 after-install::
-	install.exec "uicache; killall -9 SpringBoard"
+	install.exec "uicache; killall -9 Symbols"
