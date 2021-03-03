@@ -1,6 +1,6 @@
 TARGET = iphone:clang:13.0:13.0
 ARCHS = arm64 arm64e
-INSTALL_TARGET_PROCESSES = Symbols
+# INSTALL_TARGET_PROCESSES = Symbols
 DEBUG = 0
 FINALPACKAGE = 1
 
@@ -18,4 +18,4 @@ before-stage::
 	find . -name ".DS\_Store" -delete
 
 after-install::
-	install.exec "uicache"
+	install.exec "uicache; killall -9 SpringBoard"

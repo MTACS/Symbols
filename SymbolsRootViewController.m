@@ -1,4 +1,12 @@
 #import "SymbolsRootViewController.h"
+#define SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(v)  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)
+
+BOOL isFourteenDevice() {
+    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"14.0")) {
+        return YES;
+    }
+    return NO;
+}
 
 @interface SymbolsRootViewController ()
 @property (nonatomic, strong) NSMutableArray *searchResults;
@@ -83,11 +91,17 @@
 
 - (void)about:(id)sender {
 
-	UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Symbols" message:@"\nVersion 1.0.1 © MTAC" preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction *ok = [UIAlertAction actionWithTitle:@"Dismiss" style:UIAlertActionStyleCancel handler:nil];
-	[alertController addAction:ok];
-    [[[[UIApplication sharedApplication] keyWindow] rootViewController] presentViewController:alertController animated:YES completion:nil];
-
+	if (isFourteenDevice()) {
+		UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Symbols 2" message:@"Version 2.0\n© MTAC\n\nUpdated by Janneske\nWith help from ETHN & RuntimeOverflow" preferredStyle:UIAlertControllerStyleAlert];
+		UIAlertAction *ok = [UIAlertAction actionWithTitle:@"Dismiss" style:UIAlertActionStyleCancel handler:nil];
+		[alertController addAction:ok];
+		[[[[UIApplication sharedApplication] keyWindow] rootViewController] presentViewController:alertController animated:YES completion:nil];
+	} else {
+		UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Symbols" message:@"Version 2.0\n\n© MTAC\n\nUpdated by Janneske\nWith help from ETHN & RuntimeOverflow" preferredStyle:UIAlertControllerStyleAlert];
+		UIAlertAction *ok = [UIAlertAction actionWithTitle:@"Dismiss" style:UIAlertActionStyleCancel handler:nil];
+		[alertController addAction:ok];
+		[[[[UIApplication sharedApplication] keyWindow] rootViewController] presentViewController:alertController animated:YES completion:nil];
+	}
 }
 
 - (void)github:(id)sender {
@@ -100,9 +114,15 @@
 	if (showSearchResults) {
 		return self.searchResults;
 	} else {
-		NSMutableDictionary *symbols = [NSMutableDictionary dictionaryWithContentsOfFile:@"/Applications/Symbols.app/Symbols.plist"];
-		return [symbols objectForKey:@"items"];
+		if (isFourteenDevice()) {
+            NSMutableDictionary *symbols = [NSMutableDictionary dictionaryWithContentsOfFile:@"/Applications/Symbols.app/Symbols14.plist"];
+            return [symbols objectForKey:@"items"];
+        } else {
+            NSMutableDictionary *symbols = [NSMutableDictionary dictionaryWithContentsOfFile:@"/Applications/Symbols.app/Symbols13.plist"];
+            return [symbols objectForKey:@"items"];
+        }
 	}
+	return 0;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -149,6 +169,44 @@
 	
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 	UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
+	UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Symbol" message:[NSString stringWithFormat:@"\nChoose an export format for\n%@", [[self loadSymbols] objectAtIndex:indexPath.row]] preferredStyle:UIAlertControllerStyleAlert];
+	UIAlertAction* text = [UIAlertAction actionWithTitle:@"Text" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+        pasteboard.string = [[self loadSymbols] objectAtIndex:indexPath.row];
+		UIAlertController *copiedAlertController = [UIAlertController alertControllerWithTitle:[NSString stringWithFormat:@"%@\n\nCopied!", pasteboard.string] message:@"" preferredStyle:UIAlertControllerStyleAlert];
+		[self presentViewController:copiedAlertController animated:YES completion:nil];
+		dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.5 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+    		[copiedAlertController dismissViewControllerAnimated:true completion:nil];
+	});
+
+    }];
+	UIAlertAction* objc = [UIAlertAction actionWithTitle:@"Objective-C" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+        pasteboard.string = [NSString stringWithFormat:@"[UIImage systemImageNamed:@\"%@\"]", [[self loadSymbols] objectAtIndex:indexPath.row]];
+		UIAlertController *copiedAlertController = [UIAlertController alertControllerWithTitle:[NSString stringWithFormat:@"%@\n\nCopied!", pasteboard.string] message:@"" preferredStyle:UIAlertControllerStyleAlert];
+		[self presentViewController:copiedAlertController animated:YES completion:nil];
+		dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.5 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+    		[copiedAlertController dismissViewControllerAnimated:true completion:nil];
+	});
+
+    }];
+	UIAlertAction* swift = [UIAlertAction actionWithTitle:@"Swift" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
+        pasteboard.string = [NSString stringWithFormat:@"UIImage(systemName:\"%@\")", [[self loadSymbols] objectAtIndex:indexPath.row]];
+		UIAlertController *copiedAlertController = [UIAlertController alertControllerWithTitle:[NSString stringWithFormat:@"%@\n\nCopied!", pasteboard.string] message:@"" preferredStyle:UIAlertControllerStyleAlert];
+		[self presentViewController:copiedAlertController animated:YES completion:nil];
+		dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.5 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+    		[copiedAlertController dismissViewControllerAnimated:true completion:nil];
+	});
+
+    }];
+    UIAlertAction *ok = [UIAlertAction actionWithTitle:@"Dismiss" style:UIAlertActionStyleCancel handler:nil];
+	[alertController addAction:text];
+	[alertController addAction:objc];
+	[alertController addAction:swift];
+	[alertController addAction:ok];
+    [[[[UIApplication sharedApplication] keyWindow] rootViewController] presentViewController:alertController animated:YES completion:nil];
+
+	
+	/* [tableView deselectRowAtIndexPath:indexPath animated:YES];
+	UIPasteboard *pasteboard = [UIPasteboard generalPasteboard];
 	UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Symbols" message:@"Choose an export format" preferredStyle:UIAlertControllerStyleAlert];
 	UIAlertAction* text = [UIAlertAction actionWithTitle:@"Text" style:UIAlertActionStyleDefault handler:^(UIAlertAction * action) {
         pasteboard.string = [[self loadSymbols] objectAtIndex:indexPath.row];
@@ -167,8 +225,8 @@
 	[alertController addAction:objc];
 	[alertController addAction:swift];
 	[alertController addAction:ok];
-    [[[[UIApplication sharedApplication] keyWindow] rootViewController] presentViewController:alertController animated:YES completion:nil];
+    [[[[UIApplication sharedApplication] keyWindow] rootViewController] presentViewController:alertController animated:YES completion:nil]; */
 
-}
+} 
 
 @end
