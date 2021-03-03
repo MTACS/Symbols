@@ -1,5 +1,5 @@
 # Symbols
-Repository for Symbols app
+Repository for Symbols app. Updated for iOS 14+ and SF Symbols 2 by [Janneske](https://www.reddit.com/user/Janneske_2001)
 
 ## Disclaimer
 
