@@ -75,17 +75,19 @@ BOOL isFourteenDevice() {
 	((UITableView *)[self tableView]).keyboardDismissMode = UIScrollViewKeyboardDismissModeOnDrag;
 
 	self.title = @"Symbols";
-	UIButton *infoButton = 	[UIButton buttonWithType:UIButtonTypeCustom];
-	infoButton.bounds = CGRectMake(0, 0, 30, 30);
-	[infoButton addTarget:self action:@selector(about:) forControlEvents:UIControlEventTouchUpInside];
-	[infoButton setImage:[UIImage systemImageNamed:@"info.circle"] forState:UIControlStateNormal];
 	UIButton *githubButton = [UIButton buttonWithType:UIButtonTypeCustom];
 	githubButton.bounds = CGRectMake(0, 0, 30, 30);
 	[githubButton addTarget:self action:@selector(github:) forControlEvents:UIControlEventTouchUpInside];
-	[githubButton setImage:[UIImage systemImageNamed:@"safari.fill"] forState:UIControlStateNormal];
+	[githubButton setImage:[UIImage systemImageNamed:@"safari" withConfiguration:[UIImageSymbolConfiguration configurationWithPointSize:26]] forState:UIControlStateNormal];
+	UIButton *infoButton = 	[UIButton buttonWithType:UIButtonTypeCustom];
+	infoButton.bounds = CGRectMake(0, 0, 30, 30);
+	[infoButton addTarget:self action:@selector(about:) forControlEvents:UIControlEventTouchUpInside];
+	[infoButton setImage:[UIImage systemImageNamed:@"info.circle" withConfiguration:[UIImageSymbolConfiguration configurationWithPointSize:26]] forState:UIControlStateNormal];
 	self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:githubButton];
 	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:infoButton];
 	self.navigationController.navigationBar.prefersLargeTitles = YES;
+	// githubButton.tintColor = [UIColor labelColor]; // Personally liked the blue buttons...
+	// infoButton.tintColor = [UIColor labelColor];
 
 }
 
@@ -174,7 +176,7 @@ BOOL isFourteenDevice() {
         pasteboard.string = [[self loadSymbols] objectAtIndex:indexPath.row];
 		UIAlertController *copiedAlertController = [UIAlertController alertControllerWithTitle:[NSString stringWithFormat:@"%@\n\nCopied!", pasteboard.string] message:@"" preferredStyle:UIAlertControllerStyleAlert];
 		[self presentViewController:copiedAlertController animated:YES completion:nil];
-		dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.5 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+		dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 3.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
     		[copiedAlertController dismissViewControllerAnimated:true completion:nil];
 	});
 
@@ -183,7 +185,7 @@ BOOL isFourteenDevice() {
         pasteboard.string = [NSString stringWithFormat:@"[UIImage systemImageNamed:@\"%@\"]", [[self loadSymbols] objectAtIndex:indexPath.row]];
 		UIAlertController *copiedAlertController = [UIAlertController alertControllerWithTitle:[NSString stringWithFormat:@"%@\n\nCopied!", pasteboard.string] message:@"" preferredStyle:UIAlertControllerStyleAlert];
 		[self presentViewController:copiedAlertController animated:YES completion:nil];
-		dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.5 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+		dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 3.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
     		[copiedAlertController dismissViewControllerAnimated:true completion:nil];
 	});
 
@@ -192,7 +194,7 @@ BOOL isFourteenDevice() {
         pasteboard.string = [NSString stringWithFormat:@"UIImage(systemName:\"%@\")", [[self loadSymbols] objectAtIndex:indexPath.row]];
 		UIAlertController *copiedAlertController = [UIAlertController alertControllerWithTitle:[NSString stringWithFormat:@"%@\n\nCopied!", pasteboard.string] message:@"" preferredStyle:UIAlertControllerStyleAlert];
 		[self presentViewController:copiedAlertController animated:YES completion:nil];
-		dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 1.5 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+		dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 3.0 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
     		[copiedAlertController dismissViewControllerAnimated:true completion:nil];
 	});
 
