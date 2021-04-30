@@ -31,7 +31,7 @@
 }
 
 - (void)about:(id)sender {
-	UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Symbols 3" message:@"Version 3.0\n© MTAC\n\nUpdated by Janneske & RedenticDev\n\nWith help from ETHN & RuntimeOverflow" preferredStyle:UIAlertControllerStyleAlert];
+	UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Symbols 3\n" message:@"Version 3.0\n© MTAC\n\nUpdated by Janneske & RedenticDev\n\nWith help from ETHN & RuntimeOverflow" preferredStyle:UIAlertControllerStyleAlert];
 	[alertController addAction:[UIAlertAction actionWithTitle:@"Dismiss" style:UIAlertActionStyleCancel handler:nil]];
 	[self presentViewController:alertController animated:YES completion:nil];
 }
@@ -152,7 +152,7 @@
 	[alertController addAction:image];
 	[alertController addAction:objc];
 	[alertController addAction:swift];
-	[alertController addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:nil]];
+	[alertController addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDestructive handler:nil]];
 
     [self presentViewController:alertController animated:YES completion:nil];
 } 
