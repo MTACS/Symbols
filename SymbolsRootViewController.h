@@ -1,6 +1,11 @@
 #import <UIKit/UIKit.h>
 
-static BOOL showSearchResults = false;
+@interface SymbolsRootViewController : UITableViewController <UISearchBarDelegate>
+@property (nonatomic, strong) NSArray *symbols;
+@property (nonatomic, strong) NSMutableArray *listData;
+@end
 
-@interface SymbolsRootViewController : UITableViewController<UISearchBarDelegate>
+@interface CUICatalog : NSObject
++ (instancetype)defaultUICatalogForBundle:(NSBundle *)bundle;
+- (NSArray *)allImageNames;
 @end

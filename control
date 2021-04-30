@@ -1,6 +1,6 @@
 Package: com.mtac.symbols
 Name: Symbols
-Version: 2.0
+Version: 3.0
 Depends: firmware (>= 13.0)
 Architecture: iphoneos-arm
 Description: Easy access to Apple's SF Symbols
